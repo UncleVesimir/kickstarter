@@ -32,13 +32,23 @@ const deploy = async () => {
 
   console.log(`Attempting to deploy from account: ${accounts[0]}`);
 
-  const result = await new web3.eth.Contract(compiledFactory.abi)
+  factory = await new web3.eth.Contract(compiledFactory.abi)
     .deploy({ data: compiledFactory.evm.bytecode.object})
     .send({gas: gasLimit, from: accounts[0]});
 
-    writeDeployAddressToFile(result.options.address)
+    writeDeployAddressToFile(factory.options.address)
 
-  console.log(`Contract deloped to:${result.options.address}\n   ...address written to file.`);
+  console.log(`Contract deployed to:${factory.options.address}\n   ...address written to file.`);
+  
+  await factory.methods.createCampaign(100).send({
+    from: accounts[0],
+    gas: gasLimit
+  })
+    .on('receipt', (receipt) => {
+      console.log(`Initial Campaign created for test purposes.\n Txn Hash: ${receipt.transactionHash}` )
+    })
+    .on('error', (error, receipt) => { console.log(error)})
+
   
   
   provider.engine.stop();

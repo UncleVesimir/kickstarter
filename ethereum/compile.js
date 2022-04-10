@@ -1,6 +1,7 @@
 const path = require("path");
 const solc = require ("solc");
 const fs = require("fs-extra");
+const { deepStrictEqual } = require("assert");
 
 const fname = 'Campaign.sol'
 
