@@ -1,0 +1,6 @@
+node_modules/
+.env
+.next
+ethereum/build/*
+web3_details.json
+package-lock.json
